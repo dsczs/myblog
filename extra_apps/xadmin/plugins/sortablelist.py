@@ -7,19 +7,16 @@ of only for display.
 
 from __future__ import unicode_literals
 
-from django.template.loader import render_to_string
-from django.urls.base import reverse
 from django.db import transaction
-
+from django.template.loader import render_to_string
+from xadmin.sites import site
 from xadmin.views import (
     BaseAdminPlugin, ModelAdminView, ListAdminView
 )
-from xadmin.sites import site
 from xadmin.views.base import csrf_protect_m
 
 
 class SortableListPlugin(BaseAdminPlugin):
-
     list_order_field = None
 
     def init_request(self, *args, **kwargs):

@@ -1,16 +1,16 @@
 import copy
 import inspect
+
+from crispy_forms.utils import TEMPLATE_PACK
 from django import forms
-from django.forms.formsets import all_valid, DELETION_FIELD_NAME
-from django.forms.models import inlineformset_factory, BaseInlineFormSet, modelform_defines_fields
+from django.contrib.auth import get_permission_codename
 from django.contrib.contenttypes.forms import BaseGenericInlineFormSet, generic_inlineformset_factory
+from django.forms.formsets import all_valid, DELETION_FIELD_NAME
+from django.forms.models import inlineformset_factory, BaseInlineFormSet
 from django.template import loader
 from django.template.loader import render_to_string
-from django.contrib.auth import get_permission_codename
 from django.utils import six
 from django.utils.encoding import smart_text
-from crispy_forms.utils import TEMPLATE_PACK
-
 from xadmin.layout import FormHelper, Layout, flatatt, Container, Column, Field, Fieldset
 from xadmin.plugins.utils import get_context_dict
 from xadmin.sites import site
@@ -60,6 +60,7 @@ class InlineStyleManager(object):
     def get_style(self, name='stacked'):
         return self.inline_styles.get(name)
 
+
 style_manager = InlineStyleManager()
 
 
@@ -75,21 +76,29 @@ class InlineStyle(object):
 
     def get_attrs(self):
         return {}
+
+
 style_manager.register_style('stacked', InlineStyle)
 
 
 class OneInlineStyle(InlineStyle):
     template = 'xadmin/edit_inline/one.html'
+
+
 style_manager.register_style("one", OneInlineStyle)
 
 
 class AccInlineStyle(InlineStyle):
     template = 'xadmin/edit_inline/accordion.html'
+
+
 style_manager.register_style("accordion", AccInlineStyle)
 
 
 class TabInlineStyle(InlineStyle):
     template = 'xadmin/edit_inline/tab.html'
+
+
 style_manager.register_style("tab", TabInlineStyle)
 
 
@@ -110,6 +119,8 @@ class TableInlineStyle(InlineStyle):
             'fields': fields,
             'readonly_fields': readonly_fields
         }
+
+
 style_manager.register_style("table", TableInlineStyle)
 
 
@@ -126,7 +137,6 @@ def replace_field_to_value(layout, av):
 
 
 class InlineModelAdmin(ModelFormAdminView):
-
     fk_name = None
     formset = BaseInlineFormSet
     extra = 3
@@ -210,7 +220,7 @@ class InlineModelAdmin(ModelFormAdminView):
 
                 rendered_fields = [i[1] for i in layout.get_field_names()]
                 layout.extend([f for f in instance[0]
-                               .fields.keys() if f not in rendered_fields])
+                              .fields.keys() if f not in rendered_fields])
 
             helper.add_layout(layout)
             style.update_layout(helper)
@@ -463,7 +473,8 @@ class InlineFormsetPlugin(BaseAdminPlugin):
             replace_field_to_value(formset.helper.layout, inline)
             model = inline.model
             opts = model._meta
-            fake_admin_class = type(str('%s%sFakeAdmin' % (opts.app_label, opts.model_name)), (object, ), {'model': model})
+            fake_admin_class = type(str('%s%sFakeAdmin' % (opts.app_label, opts.model_name)), (object,),
+                                    {'model': model})
             for form in formset.forms:
                 instance = form.instance
                 if instance.pk:
@@ -485,6 +496,7 @@ class DetailInlineFormsetPlugin(InlineFormsetPlugin):
         self.formsets = [self._get_detail_formset_instance(
             inline) for inline in self.inline_instances]
         return form
+
 
 site.register_plugin(InlineFormsetPlugin, ModelFormAdminView)
 site.register_plugin(DetailInlineFormsetPlugin, DetailAdminView)

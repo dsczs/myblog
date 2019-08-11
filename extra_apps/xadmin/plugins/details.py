@@ -1,15 +1,11 @@
-
-
-from django.utils.translation import ugettext as _
-from django.urls.base import reverse, NoReverseMatch
 from django.db import models
-
+from django.urls.base import reverse, NoReverseMatch
+from django.utils.translation import ugettext as _
 from xadmin.sites import site
 from xadmin.views import BaseAdminPlugin, ListAdminView
 
 
 class DetailsPlugin(BaseAdminPlugin):
-
     show_detail_fields = []
     show_all_rel_details = True
 
@@ -48,8 +44,9 @@ class DetailsPlugin(BaseAdminPlugin):
                                 args=(getattr(rel_obj, opts.pk.attname),))
                         else:
                             edit_url = ''
-                        item.btns.append('<a data-res-uri="%s" data-edit-uri="%s" class="details-handler" rel="tooltip" title="%s"><i class="fa fa-info-circle"></i></a>'
-                                         % (item_res_uri, edit_url, _(u'Details of %s') % str(rel_obj)))
+                        item.btns.append(
+                            '<a data-res-uri="%s" data-edit-uri="%s" class="details-handler" rel="tooltip" title="%s"><i class="fa fa-info-circle"></i></a>'
+                            % (item_res_uri, edit_url, _(u'Details of %s') % str(rel_obj)))
                 except NoReverseMatch:
                     pass
         return item
@@ -59,5 +56,6 @@ class DetailsPlugin(BaseAdminPlugin):
         if self.show_all_rel_details or self.show_detail_fields:
             media = media + self.vendor('xadmin.plugin.details.js', 'xadmin.form.css')
         return media
+
 
 site.register_plugin(DetailsPlugin, ListAdminView)

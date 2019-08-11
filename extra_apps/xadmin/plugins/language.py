@@ -1,4 +1,3 @@
-
 from django.conf import settings
 from django.template import loader
 from django.views.i18n import set_language
@@ -21,6 +20,7 @@ class SetLangView(BaseAdminView):
         if 'nav_menu' in request.session:
             del request.session['nav_menu']
         return set_language(request)
+
 
 if settings.LANGUAGES and 'django.middleware.locale.LocaleMiddleware' in settings.MIDDLEWARE:
     site.register_plugin(SetLangNavPlugin, CommAdminView)

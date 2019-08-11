@@ -1,9 +1,8 @@
 from django import template
 from django.template import Library
 from django.utils import six
-from django.utils.safestring import mark_safe
 from django.utils.html import escape
-
+from django.utils.safestring import mark_safe
 from xadmin.util import static, vendor as util_vendor
 
 register = Library()
